@@ -1,42 +1,42 @@
-'use strict';
+`use strict`;
 
-const names = ['bag', 'banana', 'bathroom', 'boots', 'breakfast', 'bubblegum', 'chair', 'cthulhu', 'dog-duck', 'dragon', 'pen', 'pet-sweep', 'scissors', 'shark', 'sweep', 'tauntaun', 'unicorn', 'usb', 'water-can', 'wine-glass'];
+const names = [`bag`, `banana`, `bathroom`, `boots`, `breakfast`, `bubblegum`, `chair`, `cthulhu`, `dog-duck`, `dragon`, `pen`, `pet-sweep`, `scissors`, `shark`, `sweep`, `tauntaun`, `unicorn`, `usb`, `water-can`, `wine-glass`];
 
-const leftImage = document.getElementById('left');
-const centerImage = document.getElementById('center');
-const rightImage = document.getElementById('right');
+const leftImage = document.getElementById(`left`);
+const centerImage = document.getElementById(`center`);
+const rightImage = document.getElementById(`right`);
 
 let allProducts = [];
-const container = document.getElementById('image_container');
+const container = document.getElementById(`image_container`);
 const viewed = [];
 const labels = [];
 const pics = [leftImage, centerImage, rightImage];
-const list = document.getElementById('productlist');
+const list = document.getElementById(`productlist`);
 let totalClicks = 0;
 const views = [];
 const votes = [];
 
 function Product(name) {
   this.name = name;
-  this.path = 'img/' + name + '.jpg';
+  this.path = `img/` + name + `.jpg`;
   this.votes = 0;
   this.views = 0;
   allProducts.push(this);
 }
 
 function makeRandom() {
-  return Math.floor(Math.random() * names.length);
+  return `${Math.floor(Math.random() * names.length)}`;
 }
 
 function displayPics() {
   while (viewed.length < 6) {
-    const rando = makeRandom();
+    let rando = makeRandom();
     while (!viewed.includes(rando)) {
       viewed.push(rando);
     }
   }
   // TODO: In a sentence or two, explain why the previous line of code threw an error when we changed the variable declaration from `var` to `let`.
-  // the previous line of code threw an error because "let" is locally scoped and cannot be used globally. rando's variable declaration would have to be in a "var" form for it to be globally scoped.
+  // the previous line of code threw an error because "let" is locally scoped and cannot be used globally. rando`s variable declaration would have to be in a "var" form for it to be globally scoped.
   console.log(viewed);
 
   for (let i = 0; i < 3; i++) {
@@ -48,20 +48,20 @@ function displayPics() {
 }
 
 function handleClick(event) {
-  if (event.target.id === 'image_container') {
-    return alert('Be sure to click directly on an image!!');
+  if (event.target.id === `image_container`) {
+    return `${alert(`Be sure to click directly on an image!!`)}`;
   }
   totalClicks += 1;
   if (totalClicks > 24) {
     container.removeEventListener('click', handleClick);
-    container.style.display = 'none';
+    container.style.display = `none`;
     showList();
     makeChart();
   }
   for (let i = 0; i < names.length; i++) {
     if (event.target.id === allProducts[i].name) {
       allProducts[i].votes += 1;
-      console.log(event.target.id + ' has ' + allProducts[i].votes + ' votes in ' + allProducts[i].views + ' views');
+      console.log(`${event.target.id} has ${allProducts[i].votes} votes in ${allProducts[i].views} views`);
     }
   }
   localStorage.busmall = JSON.stringify(allProducts);
@@ -71,8 +71,8 @@ function handleClick(event) {
 
 function showList() {
   for (let i = 0; i < allProducts.length; i++) {
-    const liEl = document.createElement('li');
-    liEl.textContent = allProducts[i].name + ' has ' + allProducts[i].votes + ' votes in ' + allProducts[i].views + ' views';
+    const liEl = document.createElement(`li`);
+    liEl.textContent = `${allProducts[i].name} has ${allProducts[i].votes} votes in ${allProducts[i].views} views`;
     list.appendChild(liEl);
   }
 }
@@ -87,20 +87,20 @@ function makeChartData() {
 
 function makeChart() {
   makeChartData();
-  const ctx = document.getElementById('chartypants').getContext('2d');
+  const ctx = document.getElementById(`chartypants`).getContext(`2d`);
   new Chart(ctx, { //eslint-disable-line
-    type: 'bar',
+    type: `bar`,
     data: {
       labels: labels,
       datasets: [{
-        label: 'total votes',
-        backgroundColor: 'gold',
-        borderColor: '#214',
+        label: `total votes`,
+        backgroundColor: `gold`,
+        borderColor: `#214`,
         data: votes,
       }]
     },
     options: {
-      responsive: false,
+      responsive: `false`,
       scales: {
         yAxes: [{
           ticks: {
@@ -112,21 +112,21 @@ function makeChart() {
       }
     }
   });
-  Chart.defaults.global.defaultFontColor = '#eee'; //eslint-disable-line
+  Chart.defaults.global.defaultFontColor = `#eee`; //eslint-disable-line
 }
 
-container.addEventListener('click', handleClick);
+container.addEventListener(`click`, handleClick);
 
-document.getElementById('bus').addEventListener('click', function () {
-  localStorage.removeItem('busmall');
-  console.log('Local storage was cleared!');
+document.getElementById(`bus`).addEventListener(`click`, function () {
+  localStorage.removeItem(`busmall`);
+  console.log(`Local storage was cleared!`);
 });
 
 if (localStorage.busmall) {
-  console.log('Local storage data exists');
+  console.log(`Local storage data exists`);
   allProducts = JSON.parse(localStorage.busmall);
 } else {
-  console.log('There is no local storage data; initialize app by creating instances');
+  console.log(`There is no local storage data; initialize app by creating instances`);
   for (const i = 0; i < names.length; i++) {
     new Product(names[i]);
   }
